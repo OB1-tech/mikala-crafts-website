@@ -52,7 +52,7 @@ body { font-family: system-ui, -apple-system, sans-serif; }
 <div id="products-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
 </div>
 
-<!-- Wishlist Drawer -->
+<!-- Wishlist & Cart Drawers (same as before) -->
 <div id="wishlist-drawer" onclick="if(event.target.id==='wishlist-drawer') hideWishlistDrawer()" class="hidden fixed inset-0 bg-black/60 z-[100] flex justify-end">
 <div onclick="event.stopImmediatePropagation()" class="w-full max-w-md bg-white h-full overflow-auto">
 <div class="p-6 flex justify-between items-center border-b"><span class="font-semibold text-xl">Wishlist</span><button onclick="hideWishlistDrawer()" class="text-3xl">&times;</button></div>
@@ -60,7 +60,6 @@ body { font-family: system-ui, -apple-system, sans-serif; }
 </div>
 </div>
 
-<!-- Cart Drawer -->
 <div id="cart-drawer" onclick="if(event.target.id==='cart-drawer') hideCartDrawer()" class="hidden fixed inset-0 bg-black/60 z-[100] flex justify-end">
 <div onclick="event.stopImmediatePropagation()" class="w-full max-w-md bg-white h-full overflow-auto">
 <div class="p-6 flex justify-between items-center border-b"><span class="font-semibold text-xl">Cart</span><button onclick="hideCartDrawer()" class="text-3xl">&times;</button></div>
