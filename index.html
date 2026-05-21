@@ -13,22 +13,25 @@ body { font-family: system-ui, -apple-system, sans-serif; }
 <body class="bg-[#FDF9F3] text-[#3F2E2A]">
 
 <!-- Navbar -->
-<nav class="bg-white border-b">
+<nav class="bg-white border-b sticky top-0 z-50">
 <div class="max-w-6xl mx-auto px-6 flex justify-between items-center h-20">
 <div class="flex items-center gap-x-3">
 <div class="w-9 h-9 bg-[#9C3C2E] rounded-2xl flex items-center justify-center">
-<span class="text-white font-bold text-xl">M</span>
+<span class="text-white font-bold">M</span>
 </div>
 <span class="font-semibold text-2xl tracking-tighter">Mikala Crafts</span>
 </div>
-<a href="shop.html" class="px-6 py-2.5 bg-[#9C3C2E] text-white rounded-3xl text-sm font-medium">Shop Collection</a>
+<a href="shop.html" class="px-6 py-2.5 bg-[#9C3C2E] text-white rounded-3xl text-sm font-medium flex items-center gap-x-2">
+Shop Collection <i class="fa-solid fa-arrow-right text-xs"></i>
+</a>
 </div>
 </nav>
 
 <!-- Hero -->
-<div class="max-w-4xl mx-auto px-6 pt-20 pb-16 text-center">
-<div class="inline-flex items-center gap-x-2 bg-white border border-[#EDE4D8] rounded-3xl px-4 py-1 mb-6">
-<span class="text-xs font-semibold tracking-[1px] text-[#9C3C2E]">HANDCRAFTED IN KENYA</span>
+<div class="max-w-5xl mx-auto px-6 pt-16 pb-14 text-center">
+<div class="inline-flex items-center gap-x-2 bg-white border border-[#EDE4D8] rounded-3xl px-4 py-1 mb-6 shadow-sm">
+<div class="w-2 h-2 bg-emerald-500 rounded-full"></div>
+<span class="text-xs font-semibold tracking-[1.5px] text-[#9C3C2E]">HANDCRAFTED IN KENYA</span>
 </div>
 
 <h1 class="text-6xl md:text-7xl font-bold tracking-tighter leading-none mb-6">
@@ -40,16 +43,44 @@ Timeless pieces.<br>
 Discover beautiful jewelry, ornaments, and soapstone carvings made by skilled artisans in Kenya.
 </p>
 
-<a href="shop.html" 
-class="inline-flex items-center gap-x-3 px-9 py-4 bg-[#9C3C2E] hover:bg-[#7F2F24] text-white font-semibold text-lg rounded-3xl transition">
+<a href="shop.html" class="inline-flex items-center justify-center gap-x-3 px-9 py-4 bg-[#9C3C2E] hover:bg-[#7F2F24] transition text-white font-semibold text-lg rounded-3xl">
 Shop Collection
 <i class="fa-solid fa-arrow-right"></i>
 </a>
 
-<div class="mt-6 text-sm text-[#6B5B54]">
-Wishlist &amp; Cart features available in Shop
+<div class="mt-8 text-sm text-[#6B5B54]">
+Free shipping on orders over KES 5,000 • 30-day returns
 </div>
 </div>
+
+<!-- Trust / Categories -->
+<div class="max-w-5xl mx-auto px-6 pb-16">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<div class="bg-white border border-[#EDE4D8] rounded-3xl p-6 text-center">
+<i class="fa-solid fa-gem text-2xl text-[#9C3C2E] mb-3"></i>
+<div class="font-semibold">Jewelry</div>
+<div class="text-sm text-[#6B5B54] mt-1">Beaded necklaces, bracelets &amp; earrings</div>
+</div>
+<div class="bg-white border border-[#EDE4D8] rounded-3xl p-6 text-center">
+<i class="fa-solid fa-chess-rook text-2xl text-[#9C3C2E] mb-3"></i>
+<div class="font-semibold">Soapstone</div>
+<div class="text-sm text-[#6B5B54] mt-1">Hand-carved elephants, bowls &amp; animals</div>
+</div>
+<div class="bg-white border border-[#EDE4D8] rounded-3xl p-6 text-center">
+<i class="fa-solid fa-palette text-2xl text-[#9C3C2E] mb-3"></i>
+<div class="font-semibold">Ornaments</div>
+<div class="text-sm text-[#6B5B54] mt-1">Decorative pieces for your home</div>
+</div>
+</div>
+</div>
+
+<!-- Footer -->
+<footer class="bg-[#3F2E2A] text-[#EDE4D8] py-8 text-sm">
+<div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-y-2">
+<div>© 2026 Mikala Crafts • Made with love in Kenya</div>
+<a href="shop.html" class="hover:text-white">Browse the full collection →</a>
+</div>
+</footer>
 
 </body>
 </html>
