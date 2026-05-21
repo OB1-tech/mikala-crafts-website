@@ -1,5 +1,98 @@
 <!DOCTYPE html>
-<html>
-<head><title>Shop</title></head>
-<body><h1>Full Shop Page with Wishlist</h1></body>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shop • Mikala Crafts</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+body { font-family: system-ui, -apple-system, sans-serif; }
+.product-card { transition: all 0.3s ease; }
+.product-card:hover { transform: translateY(-4px); box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1); }
+</style>
+</head>
+<body class="bg-[#FDF9F3]">
+
+<!-- Navbar -->
+<nav class="bg-white border-b sticky top-0 z-50">
+<div class="max-w-6xl mx-auto px-6 flex justify-between items-center h-20">
+<a href="index.html" class="font-bold text-2xl">Mikala Crafts</a>
+<div class="flex items-center gap-x-4">
+<button onclick="showWishlist()" class="px-4 py-2 flex items-center gap-x-2">
+<i class="fa-regular fa-heart"></i> <span>Wishlist</span>
+</button>
+<button onclick="showCart()" class="px-4 py-2 flex items-center gap-x-2">
+<i class="fa-solid fa-shopping-bag"></i> <span>Cart</span>
+</button>
+</div>
+</div>
+</nav>
+
+<div class="max-w-6xl mx-auto px-6 py-10">
+<h1 class="text-4xl font-bold mb-8">Shop Collection</h1>
+
+<!-- Products Grid -->
+<div id="products-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
+</div>
+
+<script>
+// Simple working shop with wishlist
+let products = [
+{ id: 1, name: "Soapstone Elephant", price: 2850, category: "soapstone", image: "https://picsum.photos/id/1015/600/600" },
+{ id: 2, name: "Beaded Necklace", price: 1250, category: "jewelry", image: "https://picsum.photos/id/1005/600/600" },
+{ id: 3, name: "Carved Soapstone Bowl", price: 1950, category: "soapstone", image: "https://picsum.photos/id/201/600/600" }
+];
+
+let wishlist = [];
+let cart = [];
+
+function renderProducts() {
+  const grid = document.getElementById('products-grid');
+  grid.innerHTML = '';
+  products.forEach(p => {
+    grid.innerHTML += `
+      <div class="product-card bg-white border rounded-3xl overflow-hidden">
+        <img src="${p.image}" class="w-full aspect-square object-cover">
+        <div class="p-4">
+          <h3 class="font-semibold">${p.name}</h3>
+          <p class="text-[#9C3C2E] font-bold mt-1">KES ${p.price}</p>
+          <div class="flex gap-2 mt-4">
+            <button onclick="addToCart(${p.id})" class="flex-1 py-2 bg-[#9C3C2E] text-white rounded-2xl text-sm">Add to Cart</button>
+            <button onclick="toggleWishlist(${p.id})" class="px-4 py-2 border rounded-2xl text-sm">♡</button>
+          </div>
+        </div>
+      </div>`;
+  });
+}
+
+function addToCart(id) {
+  const product = products.find(p => p.id === id);
+  cart.push(product);
+  alert(product.name + ' added to cart');
+}
+
+function toggleWishlist(id) {
+  const product = products.find(p => p.id === id);
+  wishlist.push(product);
+  alert(product.name + ' added to wishlist');
+}
+
+function showWishlist() {
+  if (wishlist.length === 0) return alert('Wishlist is empty');
+  let text = 'Wishlist:\n';
+  wishlist.forEach(item => text += '- ' + item.name + '\n');
+  alert(text);
+}
+
+function showCart() {
+  if (cart.length === 0) return alert('Cart is empty');
+  let text = 'Cart:\n';
+  cart.forEach(item => text += '- ' + item.name + '\n');
+  alert(text);
+}
+
+window.onload = renderProducts;
+</script>
+</body>
 </html>
