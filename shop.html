@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Shop Collection • Mikala Crafts</title>
+<title>Shop • Mikala Crafts</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
 body { font-family: system-ui, -apple-system, sans-serif; }
-.product-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-.product-card:hover { transform: translateY(-8px); box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.15); }
+.product-card { transition: all 0.3s ease; }
+.product-card:hover { transform: translateY(-6px); box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1); }
 </style>
 </head>
 <body class="bg-[#FDF9F3] text-[#3F2E2A]">
@@ -21,12 +21,8 @@ body { font-family: system-ui, -apple-system, sans-serif; }
 <span class="font-semibold text-2xl tracking-tighter">Mikala Crafts</span>
 </a>
 <div class="flex items-center gap-x-3">
-<button onclick="showWishlistDrawer()" class="flex items-center gap-x-2 px-4 py-2 text-sm border border-[#EDE4D8] rounded-3xl">
-<i class="fa-regular fa-heart"></i> <span class="hidden sm:inline">Wishlist</span>
-</button>
-<button onclick="showCartDrawer()" class="flex items-center gap-x-2 px-4 py-2 text-sm border border-[#EDE4D8] rounded-3xl">
-<i class="fa-solid fa-shopping-bag"></i> <span class="hidden sm:inline">Cart</span>
-</button>
+<button onclick="showWishlistDrawer()" class="px-4 py-2 text-sm flex items-center gap-x-2 border border-[#EDE4D8] rounded-3xl"><i class="fa-regular fa-heart"></i> <span class="hidden sm:inline">Wishlist</span></button>
+<button onclick="showCartDrawer()" class="px-4 py-2 text-sm flex items-center gap-x-2 border border-[#EDE4D8] rounded-3xl"><i class="fa-solid fa-shopping-bag"></i> <span class="hidden sm:inline">Cart</span></button>
 </div>
 </div>
 </nav>
@@ -35,17 +31,17 @@ body { font-family: system-ui, -apple-system, sans-serif; }
 <h1 class="text-4xl font-bold tracking-tight">Shop Collection</h1>
 
 <div class="flex flex-col md:flex-row gap-3 mt-6">
-<input id="search" type="text" placeholder="Search jewelry, soapstone..." onkeyup="filterProducts()" class="flex-1 px-5 py-3 bg-white border border-[#D4C9B8] rounded-3xl text-sm">
+<input id="search" type="text" placeholder="Search products..." onkeyup="filterProducts()" class="flex-1 px-5 py-3 bg-white border border-[#D4C9B8] rounded-3xl text-sm">
 <select id="sort" onchange="filterProducts()" class="px-5 py-3 bg-white border border-[#D4C9B8] rounded-3xl text-sm">
-<option value="default">Sort: Default</option>
-<option value="price-low">Price: Low to High</option>
-<option value="price-high">Price: High to Low</option>
+<option value="default">Sort</option>
+<option value="price-low">Price: Low → High</option>
+<option value="price-high">Price: High → Low</option>
 <option value="name-az">Name: A → Z</option>
 </select>
 </div>
 
-<div class="flex flex-wrap gap-2 mt-4" id="category-filters">
-<button onclick="filterByCategory('all')" class="active px-5 py-2 text-sm border border-[#9C3C2E] bg-[#9C3C2E] text-white rounded-3xl">All</button>
+<div class="flex flex-wrap gap-2 mt-4" id="filters">
+<button onclick="filterByCategory('all')" class="active px-5 py-2 text-sm bg-[#9C3C2E] text-white border border-[#9C3C2E] rounded-3xl">All</button>
 <button onclick="filterByCategory('jewelry')" class="px-5 py-2 text-sm border border-[#D4C9B8] rounded-3xl">Jewelry</button>
 <button onclick="filterByCategory('soapstone')" class="px-5 py-2 text-sm border border-[#D4C9B8] rounded-3xl">Soapstone</button>
 <button onclick="filterByCategory('ornaments')" class="px-5 py-2 text-sm border border-[#D4C9B8] rounded-3xl">Ornaments</button>
@@ -57,17 +53,17 @@ body { font-family: system-ui, -apple-system, sans-serif; }
 </div>
 
 <!-- Wishlist Drawer -->
-<div id="wishlist-drawer" onclick="if (event.target.id === 'wishlist-drawer') hideWishlistDrawer()" class="hidden fixed inset-0 bg-black/60 z-[100] flex justify-end">
+<div id="wishlist-drawer" onclick="if(event.target.id==='wishlist-drawer') hideWishlistDrawer()" class="hidden fixed inset-0 bg-black/60 z-[100] flex justify-end">
 <div onclick="event.stopImmediatePropagation()" class="w-full max-w-md bg-white h-full overflow-auto">
-<div class="p-6 flex justify-between border-b"><span class="font-semibold text-xl">Wishlist</span><button onclick="hideWishlistDrawer()" class="text-3xl">&times;</button></div>
+<div class="p-6 flex justify-between items-center border-b"><span class="font-semibold text-xl">Wishlist</span><button onclick="hideWishlistDrawer()" class="text-3xl">&times;</button></div>
 <div id="wishlist-items" class="p-6"></div>
 </div>
 </div>
 
 <!-- Cart Drawer -->
-<div id="cart-drawer" onclick="if (event.target.id === 'cart-drawer') hideCartDrawer()" class="hidden fixed inset-0 bg-black/60 z-[100] flex justify-end">
+<div id="cart-drawer" onclick="if(event.target.id==='cart-drawer') hideCartDrawer()" class="hidden fixed inset-0 bg-black/60 z-[100] flex justify-end">
 <div onclick="event.stopImmediatePropagation()" class="w-full max-w-md bg-white h-full overflow-auto">
-<div class="p-6 flex justify-between border-b"><span class="font-semibold text-xl">Cart</span><button onclick="hideCartDrawer()" class="text-3xl">&times;</button></div>
+<div class="p-6 flex justify-between items-center border-b"><span class="font-semibold text-xl">Cart</span><button onclick="hideCartDrawer()" class="text-3xl">&times;</button></div>
 <div id="cart-items" class="p-6"></div>
 <div class="p-6 border-t"><button onclick="checkout()" class="w-full py-4 bg-[#9C3C2E] text-white rounded-3xl font-semibold">Checkout</button></div>
 </div>
@@ -75,41 +71,40 @@ body { font-family: system-ui, -apple-system, sans-serif; }
 
 <script>
 let products = [
-{ id: 1, name: "Soapstone Elephant Sculpture", category: "soapstone", price: 2850, image: "https://picsum.photos/id/1015/600/600" },
+{ id: 1, name: "Soapstone Elephant", category: "soapstone", price: 2850, image: "https://picsum.photos/id/1015/600/600" },
 { id: 2, name: "Beaded Maasai Necklace", category: "jewelry", price: 1250, image: "https://picsum.photos/id/1005/600/600" },
-{ id: 3, name: "Carved Soapstone Bowl", category: "soapstone", price: 1950, image: "https://picsum.photos/id/201/600/600" },
-{ id: 4, name: "Wire Wrapped Gem Earrings", category: "jewelry", price: 890, image: "https://picsum.photos/id/160/600/600" },
-{ id: 5, name: "Soapstone Giraffe Family Set", category: "ornaments", price: 4200, image: "https://picsum.photos/id/251/600/600" },
-{ id: 6, name: "Turquoise & Silver Bracelet", category: "jewelry", price: 1650, image: "https://picsum.photos/id/180/600/600" },
+{ id: 3, name: "Soapstone Bowl", category: "soapstone", price: 1950, image: "https://picsum.photos/id/201/600/600" },
+{ id: 4, name: "Gemstone Earrings", category: "jewelry", price: 890, image: "https://picsum.photos/id/160/600/600" },
+{ id: 5, name: "Giraffe Family Set", category: "ornaments", price: 4200, image: "https://picsum.photos/id/251/600/600" },
+{ id: 6, name: "Turquoise Bracelet", category: "jewelry", price: 1650, image: "https://picsum.photos/id/180/600/600" },
 { id: 7, name: "Mini Soapstone Rhino", category: "soapstone", price: 1100, image: "https://picsum.photos/id/29/600/600" },
-{ id: 8, name: "Layered Bead Gold Necklace", category: "jewelry", price: 2100, image: "https://picsum.photos/id/1009/600/600" },
-{ id: 9, name: "Handcarved Soapstone Candle Holder", category: "ornaments", price: 1450, image: "https://picsum.photos/id/160/600/600" }
+{ id: 8, name: "Layered Bead Necklace", category: "jewelry", price: 2100, image: "https://picsum.photos/id/1009/600/600" },
+{ id: 9, name: "Soapstone Candle Holder", category: "ornaments", price: 1450, image: "https://picsum.photos/id/160/600/600" }
 ];
 
-let cart = JSON.parse(localStorage.getItem('cart')) || [];
-let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+let wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
 let currentCategory = 'all';
 
-function saveToStorage() {
-  localStorage.setItem('cart', JSON.stringify(cart));
-  localStorage.setItem('wishlist', JSON.stringify(wishlist));
-}
+function save() { localStorage.setItem('cart', JSON.stringify(cart)); localStorage.setItem('wishlist', JSON.stringify(wishlist)); }
 
-function renderProducts(filtered = products) {
+function renderProducts(list = products) {
   const grid = document.getElementById('products-grid');
   grid.innerHTML = '';
-  filtered.forEach(p => {
+  list.forEach(p => {
     grid.innerHTML += `
       <div class="product-card bg-white border border-[#EDE4D8] rounded-3xl overflow-hidden">
-        <img src="${p.image}" class="w-full aspect-square object-cover">
+        <div class="relative">
+          <img src="${p.image}" class="w-full aspect-square object-cover">
+          <button onclick="event.stopImmediatePropagation(); toggleWishlist(${p.id})" class="absolute top-3 right-3 w-9 h-9 bg-white/90 rounded-full flex items-center justify-center shadow">
+            <i class="fa-regular fa-heart text-[#9C3C2E]"></i>
+          </button>
+        </div>
         <div class="p-5">
-          <div class="flex justify-between"><h3 class="font-semibold">${p.name}</h3><span class="text-[10px] px-2.5 py-0.5 bg-[#F8F1E9] rounded-full">${p.category}</span></div>
-          <div class="mt-4 flex justify-between items-center">
+          <h3 class="font-semibold leading-tight">${p.name}</h3>
+          <div class="mt-4 flex items-center justify-between">
             <span class="text-2xl font-semibold">KES ${p.price}</span>
-            <div class="flex gap-2">
-              <button onclick="addToCart(${p.id})" class="px-4 py-2 text-xs bg-[#9C3C2E] text-white rounded-3xl">Add</button>
-              <button onclick="toggleWishlist(${p.id})" class="px-3 py-2 text-xs border rounded-3xl">♡</button>
-            </div>
+            <button onclick="addToCart(${p.id})" class="px-5 py-2 text-sm bg-[#9C3C2E] text-white rounded-3xl">Add</button>
           </div>
         </div>
       </div>`;
@@ -121,23 +116,22 @@ function filterProducts() {
   let filtered = products.filter(p => p.name.toLowerCase().includes(term));
   if (currentCategory !== 'all') filtered = filtered.filter(p => p.category === currentCategory);
   const sort = document.getElementById('sort').value;
-  if (sort === 'price-low') filtered.sort((a,b)=>a.price-b.price);
-  if (sort === 'price-high') filtered.sort((a,b)=>b.price-a.price);
-  if (sort === 'name-az') filtered.sort((a,b)=>a.name.localeCompare(b.name));
+  if (sort === 'price-low') filtered.sort((a,b) => a.price - b.price);
+  if (sort === 'price-high') filtered.sort((a,b) => b.price - a.price);
+  if (sort === 'name-az') filtered.sort((a,b) => a.name.localeCompare(b.name));
   renderProducts(filtered);
 }
 
 function filterByCategory(cat) {
   currentCategory = cat;
-  document.querySelectorAll('#category-filters button').forEach(b => b.classList.remove('active','bg-[#9C3C2E]','text-white'));
-  event.target.classList.add('active','bg-[#9C3C2E]','text-white');
+  document.querySelectorAll('#filters button').forEach(b => b.classList.remove('active', 'bg-[#9C3C2E]', 'text-white'));
+  event.target.classList.add('active', 'bg-[#9C3C2E]', 'text-white');
   filterProducts();
 }
 
 function addToCart(id) {
   const p = products.find(x => x.id === id);
-  cart.push(p);
-  saveToStorage();
+  cart.push(p); save();
   showToast(`${p.name} added to cart`);
 }
 
@@ -145,56 +139,50 @@ function toggleWishlist(id) {
   const p = products.find(x => x.id === id);
   const i = wishlist.findIndex(x => x.id === id);
   if (i > -1) wishlist.splice(i,1); else wishlist.push(p);
-  saveToStorage();
+  save();
   showToast('Wishlist updated');
 }
 
 function showWishlistDrawer() {
   const d = document.getElementById('wishlist-drawer');
   const c = document.getElementById('wishlist-items');
-  c.innerHTML = wishlist.length ? '' : '<p class="text-center py-8">Wishlist is empty</p>';
-  wishlist.forEach((item,i) => {
-    c.innerHTML += `<div class="flex gap-4 mb-5"><img src="${item.image}" class="w-16 h-16 rounded-2xl object-cover"><div class="flex-1"><div>${item.name}</div><div class="text-sm">KES ${item.price}</div><div class="flex gap-2 mt-2"><button onclick="moveToCart(${i},'wishlist')" class="text-xs px-4 py-1 bg-[#9C3C2E] text-white rounded-2xl">Add to Cart</button><button onclick="removeFromWishlist(${i})" class="text-xs px-4 py-1 border rounded-2xl">Remove</button></div></div></div>`;
-  });
+  c.innerHTML = '';
+  if (!wishlist.length) { c.innerHTML = '<p class="text-center py-8 text-[#6B5B54]">Wishlist is empty</p>'; }
+  else {
+    wishlist.forEach((item,i) => {
+      c.innerHTML += `<div class="flex gap-4 mb-5"><img src="${item.image}" class="w-16 h-16 rounded-2xl object-cover"><div><div class="font-medium">${item.name}</div><div class="text-sm">KES ${item.price}</div><div class="flex gap-2 mt-2"><button onclick="moveToCartFromWishlist(${i})" class="text-xs px-4 py-1 bg-[#9C3C2E] text-white rounded-2xl">Add to Cart</button><button onclick="removeFromWishlist(${i})" class="text-xs px-4 py-1 border rounded-2xl">Remove</button></div></div></div>`;
+    });
+  }
   d.classList.remove('hidden'); d.classList.add('flex');
 }
 
 function hideWishlistDrawer() { document.getElementById('wishlist-drawer').classList.add('hidden'); document.getElementById('wishlist-drawer').classList.remove('flex'); }
 
-function removeFromWishlist(i) { wishlist.splice(i,1); saveToStorage(); showWishlistDrawer(); }
+function removeFromWishlist(i){ wishlist.splice(i,1); save(); showWishlistDrawer(); }
+
+function moveToCartFromWishlist(i){ const item = wishlist[i]; cart.push(item); wishlist.splice(i,1); save(); showWishlistDrawer(); showToast('Moved to cart'); }
 
 function showCartDrawer() {
   const d = document.getElementById('cart-drawer');
   const c = document.getElementById('cart-items');
   let total = 0;
   c.innerHTML = '';
-  cart.forEach((item,i) => { total += item.price; c.innerHTML += `<div class="flex justify-between mb-3"><div>${item.name} <span class="text-sm">KES ${item.price}</span></div><button onclick="removeFromCart(${i})" class="text-red-500 text-sm">Remove</button></div>`; });
+  cart.forEach((item,i) => { total += item.price; c.innerHTML += `<div class="flex justify-between mb-3"><div>${item.name}<br><span class="text-sm">KES ${item.price}</span></div><button onclick="removeFromCart(${i})" class="text-red-500 text-sm">Remove</button></div>` });
   c.innerHTML += `<div class="font-semibold mt-4 pt-4 border-t">Total: KES ${total}</div>`;
   d.classList.remove('hidden'); d.classList.add('flex');
 }
 
-function hideCartDrawer() { document.getElementById('cart-drawer').classList.add('hidden'); document.getElementById('cart-drawer').classList.remove('flex'); }
+function hideCartDrawer(){ document.getElementById('cart-drawer').classList.add('hidden'); document.getElementById('cart-drawer').classList.remove('flex'); }
 
-function removeFromCart(i) { cart.splice(i,1); saveToStorage(); showCartDrawer(); }
+function removeFromCart(i){ cart.splice(i,1); save(); showCartDrawer(); }
 
-function moveToCart(i, from) {
-  const item = from === 'wishlist' ? wishlist[i] : null;
-  if (item) { cart.push(item); wishlist.splice(i,1); saveToStorage(); showWishlistDrawer(); showToast('Moved to cart'); }
-}
+function checkout(){ alert('Thank you! Order placed.'); cart=[]; save(); hideCartDrawer(); }
 
-function checkout() { alert('Thank you! Your order has been placed.'); cart = []; saveToStorage(); hideCartDrawer(); }
-
-function showToast(msg) {
-  const t = document.createElement('div');
-  t.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 bg-[#3F2E2A] text-white px-6 py-3 rounded-3xl text-sm z-[200]';
-  t.textContent = msg;
-  document.body.appendChild(t);
-  setTimeout(() => t.remove(), 2000);
-}
+function showToast(msg){ const t=document.createElement('div'); t.className='fixed bottom-6 left-1/2 -translate-x-1/2 bg-[#3F2E2A] text-white px-6 py-3 rounded-3xl text-sm z-[200]'; t.textContent=msg; document.body.appendChild(t); setTimeout(()=>t.remove(),2000); }
 
 window.onload = () => {
   renderProducts(products);
-  document.querySelector('#category-filters button').classList.add('active','bg-[#9C3C2E]','text-white');
+  document.querySelector('#filters button').classList.add('active','bg-[#9C3C2E]','text-white');
 };
 </script>
 </body>
