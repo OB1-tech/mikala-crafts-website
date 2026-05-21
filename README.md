@@ -1,3 +1,3 @@
 # Mikala Crafts
 
-Handcrafted jewelry and soapstone from Kenya.
+Premium handcrafted jewelry and soapstone from Kenya.
