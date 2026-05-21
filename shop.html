@@ -3,96 +3,289 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Shop • Mikala Crafts</title>
+<title>Shop Collection • Mikala Crafts</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
 body { font-family: system-ui, -apple-system, sans-serif; }
-.product-card { transition: all 0.3s ease; }
-.product-card:hover { transform: translateY(-4px); box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1); }
+.product-card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+.product-card:hover { transform: translateY(-6px); box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1); }
+.drawer { transition: transform 0.3s ease; }
 </style>
 </head>
-<body class="bg-[#FDF9F3]">
+<body class="bg-[#FDF9F3] text-[#3F2E2A]">
 
 <!-- Navbar -->
 <nav class="bg-white border-b sticky top-0 z-50">
-<div class="max-w-6xl mx-auto px-6 flex justify-between items-center h-20">
-<a href="index.html" class="font-bold text-2xl">Mikala Crafts</a>
-<div class="flex items-center gap-x-4">
-<button onclick="showWishlist()" class="px-4 py-2 flex items-center gap-x-2">
-<i class="fa-regular fa-heart"></i> <span>Wishlist</span>
+<div class="max-w-7xl mx-auto px-6 flex justify-between items-center h-20">
+<a href="index.html" class="flex items-center gap-x-3">
+<div class="w-9 h-9 bg-[#9C3C2E] rounded-2xl flex items-center justify-center"><span class="text-white font-bold">M</span></div>
+<span class="font-semibold text-2xl tracking-tighter">Mikala Crafts</span>
+</a>
+
+<div class="flex items-center gap-x-3">
+<button onclick="showWishlistDrawer()" class="flex items-center gap-x-2 px-4 py-2 text-sm border border-[#EDE4D8] rounded-3xl hover:bg-white">
+<i class="fa-regular fa-heart"></i> <span class="hidden sm:inline">Wishlist</span>
 </button>
-<button onclick="showCart()" class="px-4 py-2 flex items-center gap-x-2">
-<i class="fa-solid fa-shopping-bag"></i> <span>Cart</span>
+<button onclick="showCartDrawer()" class="flex items-center gap-x-2 px-4 py-2 text-sm border border-[#EDE4D8] rounded-3xl hover:bg-white">
+<i class="fa-solid fa-shopping-bag"></i> <span class="hidden sm:inline">Cart</span>
 </button>
 </div>
 </div>
 </nav>
 
-<div class="max-w-6xl mx-auto px-6 py-10">
-<h1 class="text-4xl font-bold mb-8">Shop Collection</h1>
+<div class="max-w-7xl mx-auto px-6 pt-8 pb-4">
+<h1 class="text-4xl font-bold tracking-tight">Shop Collection</h1>
+<p class="text-[#6B5B54] mt-1">Handcrafted jewelry, soapstone &amp; ornaments</p>
 
-<!-- Products Grid -->
+<!-- Search + Filters -->
+<div class="flex flex-col md:flex-row gap-3 mt-6">
+<input id="search" type="text" placeholder="Search products..." onkeyup="filterProducts()" 
+class="flex-1 px-5 py-3 bg-white border border-[#D4C9B8] rounded-3xl text-sm">
+
+<select id="sort" onchange="filterProducts()" class="px-5 py-3 bg-white border border-[#D4C9B8] rounded-3xl text-sm">
+<option value="default">Sort: Default</option>
+<option value="price-low">Price: Low to High</option>
+<option value="price-high">Price: High to Low</option>
+<option value="name-az">Name: A → Z</option>
+</select>
+</div>
+
+<!-- Category Filters -->
+<div class="flex flex-wrap gap-2 mt-4" id="category-filters">
+<button onclick="filterByCategory('all')" class="active px-5 py-2 text-sm border border-[#9C3C2E] bg-[#9C3C2E] text-white rounded-3xl">All</button>
+<button onclick="filterByCategory('jewelry')" class="px-5 py-2 text-sm border border-[#D4C9B8] rounded-3xl">Jewelry</button>
+<button onclick="filterByCategory('soapstone')" class="px-5 py-2 text-sm border border-[#D4C9B8] rounded-3xl">Soapstone</button>
+<button onclick="filterByCategory('ornaments')" class="px-5 py-2 text-sm border border-[#D4C9B8] rounded-3xl">Ornaments</button>
+</div>
+</div>
+
+<!-- Products -->
+<div class="max-w-7xl mx-auto px-6 pb-16">
 <div id="products-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
 </div>
 
+<!-- Wishlist Drawer -->
+<div id="wishlist-drawer" onclick="if (event.target.id === 'wishlist-drawer') hideWishlistDrawer()" class="hidden fixed inset-0 bg-black/60 z-[100] flex justify-end">
+<div onclick="event.stopImmediatePropagation()" class="w-full max-w-md bg-white h-full overflow-auto">
+<div class="p-6 border-b flex justify-between items-center">
+<span class="font-semibold text-xl">Your Wishlist</span>
+<button onclick="hideWishlistDrawer()" class="text-3xl">&times;</button>
+</div>
+<div id="wishlist-items" class="p-6"></div>
+</div>
+</div>
+
+<!-- Cart Drawer -->
+<div id="cart-drawer" onclick="if (event.target.id === 'cart-drawer') hideCartDrawer()" class="hidden fixed inset-0 bg-black/60 z-[100] flex justify-end">
+<div onclick="event.stopImmediatePropagation()" class="w-full max-w-md bg-white h-full overflow-auto">
+<div class="p-6 border-b flex justify-between items-center">
+<span class="font-semibold text-xl">Your Cart</span>
+<button onclick="hideCartDrawer()" class="text-3xl">&times;</button>
+</div>
+<div id="cart-items" class="p-6"></div>
+<div class="p-6 border-t">
+<button onclick="checkout()" class="w-full py-4 bg-[#9C3C2E] text-white rounded-3xl font-semibold">Checkout</button>
+</div>
+</div>
+</div>
+
 <script>
-// Simple working shop with wishlist
 let products = [
-{ id: 1, name: "Soapstone Elephant", price: 2850, category: "soapstone", image: "https://picsum.photos/id/1015/600/600" },
-{ id: 2, name: "Beaded Necklace", price: 1250, category: "jewelry", image: "https://picsum.photos/id/1005/600/600" },
-{ id: 3, name: "Carved Soapstone Bowl", price: 1950, category: "soapstone", image: "https://picsum.photos/id/201/600/600" }
+{ id: 1, name: "Soapstone Elephant Sculpture", category: "soapstone", price: 2850, image: "https://picsum.photos/id/1015/600/600" },
+{ id: 2, name: "Beaded Maasai Necklace", category: "jewelry", price: 1250, image: "https://picsum.photos/id/1005/600/600" },
+{ id: 3, name: "Carved Soapstone Bowl", category: "soapstone", price: 1950, image: "https://picsum.photos/id/201/600/600" },
+{ id: 4, name: "Wire Wrapped Earrings", category: "jewelry", price: 890, image: "https://picsum.photos/id/160/600/600" },
+{ id: 5, name: "Soapstone Giraffe Family", category: "ornaments", price: 4200, image: "https://picsum.photos/id/251/600/600" },
+{ id: 6, name: "Turquoise Bracelet", category: "jewelry", price: 1650, image: "https://picsum.photos/id/180/600/600" }
 ];
 
-let wishlist = [];
 let cart = [];
+let wishlist = [];
+let currentCategory = 'all';
 
-function renderProducts() {
+function renderProducts(filteredProducts) {
   const grid = document.getElementById('products-grid');
   grid.innerHTML = '';
-  products.forEach(p => {
+  
+  const toShow = filteredProducts || products;
+  
+  toShow.forEach(product => {
     grid.innerHTML += `
-      <div class="product-card bg-white border rounded-3xl overflow-hidden">
-        <img src="${p.image}" class="w-full aspect-square object-cover">
-        <div class="p-4">
-          <h3 class="font-semibold">${p.name}</h3>
-          <p class="text-[#9C3C2E] font-bold mt-1">KES ${p.price}</p>
-          <div class="flex gap-2 mt-4">
-            <button onclick="addToCart(${p.id})" class="flex-1 py-2 bg-[#9C3C2E] text-white rounded-2xl text-sm">Add to Cart</button>
-            <button onclick="toggleWishlist(${p.id})" class="px-4 py-2 border rounded-2xl text-sm">♡</button>
+      <div class="product-card bg-white border border-[#EDE4D8] rounded-3xl overflow-hidden">
+        <img src="${product.image}" class="w-full aspect-square object-cover">
+        <div class="p-5">
+          <div class="flex justify-between items-start">
+            <h3 class="font-semibold pr-2">${product.name}</h3>
+            <span class="text-xs px-2.5 py-0.5 bg-[#F8F1E9] rounded-full text-[#9C3C2E]">${product.category}</span>
+          </div>
+          <div class="mt-4 flex items-center justify-between">
+            <span class="text-2xl font-semibold">KES ${product.price}</span>
+            <div class="flex gap-2">
+              <button onclick="addToCart(${product.id})" class="px-4 py-2 text-xs bg-[#9C3C2E] text-white rounded-3xl">Add</button>
+              <button onclick="toggleWishlist(${product.id})" class="px-3 py-2 text-xs border border-[#D4C9B8] rounded-3xl">♡</button>
+            </div>
           </div>
         </div>
       </div>`;
   });
 }
 
+function filterProducts() {
+  const term = document.getElementById('search').value.toLowerCase();
+  const sortType = document.getElementById('sort').value;
+  
+  let filtered = products.filter(p => 
+    p.name.toLowerCase().includes(term) || 
+    p.category.toLowerCase().includes(term)
+  );
+  
+  if (currentCategory !== 'all') {
+    filtered = filtered.filter(p => p.category === currentCategory);
+  }
+  
+  // Sorting
+  if (sortType === 'price-low') filtered.sort((a,b) => a.price - b.price);
+  if (sortType === 'price-high') filtered.sort((a,b) => b.price - a.price);
+  if (sortType === 'name-az') filtered.sort((a,b) => a.name.localeCompare(b.name));
+  
+  renderProducts(filtered);
+}
+
+function filterByCategory(category) {
+  currentCategory = category;
+  document.querySelectorAll('#category-filters button').forEach(btn => btn.classList.remove('active', 'bg-[#9C3C2E]', 'text-white', 'border-[#9C3C2E]'));
+  event.target.classList.add('active', 'bg-[#9C3C2E]', 'text-white', 'border-[#9C3C2E]');
+  filterProducts();
+}
+
 function addToCart(id) {
   const product = products.find(p => p.id === id);
   cart.push(product);
-  alert(product.name + ' added to cart');
+  showToast(`${product.name} added to cart`);
 }
 
 function toggleWishlist(id) {
   const product = products.find(p => p.id === id);
-  wishlist.push(product);
-  alert(product.name + ' added to wishlist');
+  const index = wishlist.findIndex(p => p.id === id);
+  
+  if (index > -1) {
+    wishlist.splice(index, 1);
+  } else {
+    wishlist.push(product);
+  }
+  showToast('Wishlist updated');
 }
 
-function showWishlist() {
-  if (wishlist.length === 0) return alert('Wishlist is empty');
-  let text = 'Wishlist:\n';
-  wishlist.forEach(item => text += '- ' + item.name + '\n');
-  alert(text);
+function showWishlistDrawer() {
+  const drawer = document.getElementById('wishlist-drawer');
+  const container = document.getElementById('wishlist-items');
+  container.innerHTML = '';
+  
+  if (wishlist.length === 0) {
+    container.innerHTML = '<p class="text-center py-8 text-[#6B5B54]">Your wishlist is empty</p>';
+  } else {
+    wishlist.forEach((item, index) => {
+      container.innerHTML += `
+        <div class="flex gap-4 mb-5">
+          <img src="${item.image}" class="w-16 h-16 rounded-2xl object-cover border">
+          <div class="flex-1">
+            <div class="font-medium">${item.name}</div>
+            <div class="text-sm">KES ${item.price}</div>
+            <div class="flex gap-2 mt-2">
+              <button onclick="moveToCartFromWishlist(${index})" class="text-xs px-4 py-1 bg-[#9C3C2E] text-white rounded-2xl">Add to Cart</button>
+              <button onclick="removeFromWishlist(${index})" class="text-xs px-4 py-1 border rounded-2xl">Remove</button>
+            </div>
+          </div>
+        </div>`;
+    });
+  }
+  drawer.classList.remove('hidden');
+  drawer.classList.add('flex');
 }
 
-function showCart() {
-  if (cart.length === 0) return alert('Cart is empty');
-  let text = 'Cart:\n';
-  cart.forEach(item => text += '- ' + item.name + '\n');
-  alert(text);
+function hideWishlistDrawer() {
+  document.getElementById('wishlist-drawer').classList.add('hidden');
+  document.getElementById('wishlist-drawer').classList.remove('flex');
 }
 
-window.onload = renderProducts;
+function removeFromWishlist(index) {
+  wishlist.splice(index, 1);
+  showWishlistDrawer();
+}
+
+function moveToCartFromWishlist(index) {
+  const item = wishlist[index];
+  cart.push(item);
+  wishlist.splice(index, 1);
+  showWishlistDrawer();
+  showToast('Moved to cart');
+}
+
+function showCartDrawer() {
+  const drawer = document.getElementById('cart-drawer');
+  const container = document.getElementById('cart-items');
+  container.innerHTML = '';
+  
+  if (cart.length === 0) {
+    container.innerHTML = '<p class="text-center py-8 text-[#6B5B54]">Your cart is empty</p>';
+  } else {
+    let total = 0;
+    cart.forEach((item, index) => {
+      total += item.price;
+      container.innerHTML += `
+        <div class="flex justify-between items-center mb-4">
+          <div>
+            <div class="font-medium">${item.name}</div>
+            <div class="text-sm">KES ${item.price}</div>
+          </div>
+          <button onclick="removeFromCart(${index})" class="text-red-500 text-sm">Remove</button>
+        </div>`;
+    });
+    container.innerHTML += `<div class="font-semibold mt-6 pt-4 border-t">Total: KES ${total}</div>`;
+  }
+  drawer.classList.remove('hidden');
+  drawer.classList.add('flex');
+}
+
+function hideCartDrawer() {
+  document.getElementById('cart-drawer').classList.add('hidden');
+  document.getElementById('cart-drawer').classList.remove('flex');
+}
+
+function removeFromCart(index) {
+  cart.splice(index, 1);
+  showCartDrawer();
+}
+
+function checkout() {
+  alert('Thank you! Order placed. (Demo)');
+  cart = [];
+  hideCartDrawer();
+}
+
+function showToast(msg) {
+  const toast = document.createElement('div');
+  toast.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 bg-[#3F2E2A] text-white px-6 py-3 rounded-3xl text-sm z-[200]';
+  toast.textContent = msg;
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 2200);
+}
+
+function filterByCategory(category) {
+  currentCategory = category;
+  document.querySelectorAll('#category-filters button').forEach(btn => {
+    btn.classList.remove('active', 'bg-[#9C3C2E]', 'text-white', 'border-[#9C3C2E]');
+  });
+  event.target.classList.add('active', 'bg-[#9C3C2E]', 'text-white', 'border-[#9C3C2E]');
+  filterProducts();
+}
+
+window.onload = () => {
+  renderProducts(products);
+  // Set initial active filter
+  document.querySelector('#category-filters button').classList.add('active', 'bg-[#9C3C2E]', 'text-white', 'border-[#9C3C2E]');
+};
 </script>
 </body>
 </html>
