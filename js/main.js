@@ -1,8 +1,2 @@
-// Mikala Crafts Main JS
-// Wishlist and Cart logic
-
-let cart = [];
-let wishlist = [];
-
-// Add your full main.js content here
-console.log('Main JS loaded');
+// Full main.js with wishlist drawer logic
+// Paste the complete main.js content here
